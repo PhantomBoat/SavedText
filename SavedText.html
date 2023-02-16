@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MentorScript</title>
+    <style>
+        body {
+            font-size: 2em;
+            font-family: Corbel;
+            background-color: #333333;
+            color: goldenrod;
+        }
+
+        #commandContainer {
+            display: grid;
+            border-bottom: 0.1em solid gold;
+        }
+
+        .commandRow {
+            display: grid;
+            grid-template-columns: 4.5em auto;
+            margin-bottom: 0.5em;
+            border-bottom: 0.1em solid goldenrod;
+            padding-bottom: 0.1em;
+        }
+
+        button {
+            display: inline;
+            width: 5em;
+            font-size: 0.8em;
+            color: goldenrod;
+            background-color: #555555;
+        }
+
+        button:hover {
+            background-color: #B22222;
+        }
+
+        button:active {
+            background-color: #FA8072;
+        }
+
+        .commandRow p {
+            display: inline;
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+        }
+
+        #commandMakerContainer p {
+            margin-bottom: 0.3em;
+        }
+
+        #commandMakerContainer input {
+            background-color: #888888;
+            font-size: 1em;
+            color: goldenrod;
+            display: block;
+            margin-bottom: 0.4em;
+        }
+
+        #commandMakerContainer textarea {
+            background-color: #888888;
+            font-size: 1em;
+            color: goldenrod;
+            display: block;
+            margin-bottom: 0.4em;
+        }
+
+        #commandMakerContainer button {
+            width: 17em;
+            display: block;
+        }
+
+        #commandMakerContainer ::placeholder {
+            color: gold;
+            opacity: 1;
+        }
+
+        #commandMakerContainer ::-ms-input-placeholder {
+            color: gold;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var commands = [
+            {
+                "name": "Olm Markers",
+                "copyText": "**Link to CoX tilemarkers ->** https://tinyurl.com/Olm-Markers\n\nhttps://i.imgur.com/mU6zn4t.gif"
+            },
+            {
+                "name": "CoX Plugins",
+                "copyText": "**CoX RuneLite Plugins**\nRuneLite Default plugins:\n- Tile Indicators (enable \"`Highlight true tile`\")\n- Party(enable)\n- Special Attack Counter (enable)\n- Entity Hider (enable \"`Hide Dead NPCs`\")\n- Chambers of Xeric (enable \"`Show scout overlay inside raid`\")\nPlugin Hub:n- Hub Party Panel\n- Crab Stun Timer\n- Crab Solver\n- CoX Timers & Additions\n- RuneWatch (enable \"`Screenshot Trades`\")"
+            },
+            {
+                "name": "Adv Mentor Ping",
+                "copyText": "!ping-role CoX Med Learner | Sending med/adv (teching skipping and general time save) mentor raid in " + getDiscordTimePlus15() + ". Reqs: Core upgrades from the first image in <#679144351754092545>, 50kc+, no ironmen. DM <@!136514667769102336> to apply."
+            },
+            {
+                "name": "Party Image",
+                "copyText": "https://i.imgur.com/0XeiVAc.png"
+            },
+            { "name": "Olm Ping", "copyText": "!ping-vc | https://youtu.be/D0E47uudcBw" },
+            { "name": "ToB Markers", "copyText": "**Link to ToB tilemarkers ->** https://pastebin.com/raw/ubJZ5LpC\n\nhttps://i.imgur.com/mU6zn4t.gif" },
+            { "name": "ToB Plugins", "copyText": "**RuneLite Defaut plugins:**\n- `Tile Indicators` (*enable* \"`Highlight true tile`\")\n- `Party` (*enable*)\n- `Special Attack Counter` (*enable*)\n- `Entity Hider` (*enable* \"`Hide Dead NPCs`\")\n\n**Plugin Hub:**\n- `ToB Health Bars` (*enable*)\n- `Thrall Helper` (*enable*)\n- `Vengeance Helper` (*enable*)\n- `ToB QoL` (use the following setings)\n```json\n{\n\"Maiden\": {\n\"Display Crabs Health\": \"Hitpoints\"\n};\n\"Nylocas\": {\n\"Pillar HP\": true;\n\"Hide Objects\": \"Pllars and Webs\";\n\"Recolor Menu\": true;\n\"Recolor Bigs Menu Darker\": true;\n\"Role Selector\": true;\n\"Bigs SW Tile\": true;\n};\n\"Verzik\": {\n\"Verzik Reds Health Overlay\": true\n};\n}```" },
+            { "name": "Mentor Ping", "copyText": "!ping-role CoX Learner | Sending mentor raid in " + getDiscordTimePlus15() + " . <#520950059131732008> min reqs <#679144351754092545> **Split only!**" },
+        ];
+
+
+        function copyText(id) {
+            navigator.clipboard.writeText(getText(id));
+        }
+
+        function getText(id) {
+            return commands[id].copyText;
+        }
+
+        function generateCommandRows() {
+            var commandContainer = document.getElementById("commandContainer");
+
+            const outputHTML = commands
+                .map(command => `
+                    <div class="commandRow">
+                        <button onclick="copyText(${commands.indexOf(command)})">Copy</button>
+                        <p>${command.name}</p>
+                    </div>
+                `);
+
+            commandContainer.innerHTML = outputHTML.join('');
+        }
+
+        function generateCommandData() {
+            var newName = document.getElementById("name").value;
+            var newCopyText = document.getElementById("copyText").value;
+
+            var newCommand = { "name": "", "copyText": "" };
+            newCommand.name = newName;
+            newCommand.copyText = newCopyText;
+            console.log(newCommand);
+
+            navigator.clipboard.writeText(JSON.stringify(newCommand) + ",");
+        }
+
+        function getDiscordTimePlus15() {
+            return "<t:" + get15MinFromNow() + ":R>";
+        }
+
+        function get15MinFromNow() {
+            var time = (new Date()).getTime();
+            return parseInt((time + (900 * 1000)) / 1000);
+        }
+    </script>
+    <div id="commandContainer"></div>
+    <div id="commandMakerContainer">
+        <p style="font-weight: bold;">Below this message is a tool for creating commands.</p>
+        <input id="name" placeholder="Name of the copy paste">
+        <textarea id="copyText" placeholder="The text that will end up in your Ctrl-V here" rows="5"
+            cols="40"></textarea>
+        <button onclick="generateCommandData()">Generate command and put in Ctrl-V</button>
+        <p style="color:gray; font-style:italic">
+            After this, edit this document (Notepad will do) and add this new thing
+            after the last '}' in "commands". Remember to add a ',' after the '}' before Ctrl-V:ing this new command.
+        </p>
+        <p style="color:gray; font-style:italic">
+            Add Discord timer by entering "+ getDiscordTimePlus15() +" where you want the time to be. This will insert a relative timer that counts down from 15 minutes from when this page was loaded. Refresh this page if you want to update from when the countdown begins. E.i if the you opened this page 32min ago then Discord will say "17 minutes ago". Reloading the page will make it 15min from when you reloaded it. NOTE that requires you to add '"' characters before the first '+' and after the second '+'.
+            It should look like this <span style="font-family: Consolas; font-style:normal; font-weight:bold" >"+ getDiscordTimePlus15() +"</span>.
+        </p>
+    </div>
+    <script>
+        document.onload = generateCommandRows();
+
+    </script>
+</body>
+
+</html>
